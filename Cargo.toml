@@ -1,0 +1,22 @@
+[package]
+name = "project-manager-server-diesel"
+version = "0.1.0"
+authors = ["hong <ustchcl@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+async-std = { version = "1.5.0", features = [ "attributes" ] }
+futures = "0.3"
+paw = "1.0"
+structopt = { version = "0.3", features = [ "paw" ] }
+dotenv = "0.15.0"
+actix-web = "3.3.2"
+actix-identity = "0.3.1"
+serde = "1.0.106"
+serde_json = "1.0.51"
+derive_more = "0.99.11"
+chrono = { version = "0.4.19", features = ['alloc', 'std', 'clock', 'serde'] }
+diesel = { version = "1.4.4", features = ["mysql", "r2d2", "chrono"] }
