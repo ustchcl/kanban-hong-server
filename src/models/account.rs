@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Utc, NaiveDateTime};
 use serde::Serialize;
 use diesel::deserialize;
 
@@ -8,8 +8,8 @@ pub struct Account {
     pub username: String,
     #[serde(skip_serializing)]
     pub password: String,
-    pub icon: String,
-    pub create_time: DateTime<Utc>,
+    pub icon: Option<String>,
+    pub create_time: NaiveDateTime,
 }
 
 impl Account {

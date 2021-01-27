@@ -1,3 +1,5 @@
+use std::usize;
+
 use crate::models::account::Account;
 use crate::schema::account;
 use diesel::mysql::MysqlConnection;
@@ -27,7 +29,12 @@ impl From<Error> for DuplicatedUsername {
     }
 }
 
-pub fn create(conn: &MysqlConnection, username: &str, password: &str, icon: Option<&str>) -> Result<Account, DuplicatedUsername> {
+pub fn create(
+    conn: &MysqlConnection,
+    username: &str,
+    password: &str,
+    icon: Option<&str>,
+) -> Result<usize, DuplicatedUsername> {
     let new_account = &NewAccount {
         username,
         password,
@@ -36,7 +43,7 @@ pub fn create(conn: &MysqlConnection, username: &str, password: &str, icon: Opti
 
     diesel::insert_into(account::table)
         .values(new_account)
-        .get_result::<Account>(conn)
+        .execute(conn)
         .map_err(Into::into)
 }
 
@@ -50,3 +57,28 @@ pub fn login(conn: &MysqlConnection, username: &str, password: &str) -> Option<A
 
     Some(account)
 }
+
+pub fn find(conn: &MysqlConnection, id: i32) -> Option<Account> {
+    account::table
+        .filter(account::id.eq(id))
+        .get_result::<Account>(conn)
+        .map_err(|err| eprintln!("get_account_by_id: {}", err))
+        .ok()
+}
+
+#[derive(Deserialize, AsChangeset, Default)]
+#[table_name = "account"]
+pub struct UpdateAccountData {
+    username: Option<String>,
+    password: Option<String>,
+    icon: Option<String>,
+}
+
+pub fn update(conn: &MysqlConnection, id: i32, data: &UpdateAccountData) -> Result<usize, DuplicatedUsername> {
+    diesel::update(account::table.find(id))
+        .set(data)
+        .execute(conn)
+        .map_err(Into::into)
+}
+
+
