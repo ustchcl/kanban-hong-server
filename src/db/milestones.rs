@@ -1,5 +1,6 @@
 use chrono::NaiveDateTime;
 use crate::schema::milestone;
+use crate::models::milestone::Milestone;
 use diesel::prelude::*;
 use diesel::mysql::MysqlConnection;
 use serde::Deserialize;
@@ -44,9 +45,35 @@ pub struct UpdateMilestoneData {
 
 pub fn update(
     conn: &MysqlConnection,
+    id: i32,
     data: &UpdateMilestoneData
 ) -> Option<bool> {
-    Some(true)
+    let milestone = diesel::update(milestone::table)
+        .set(data)
+        .execute(conn)
+        .ok();
+    Some(milestone)
 }
 
-    
+pub fn delete(
+    conn: &MysqlConnection,
+    id: i32
+) -> bool {
+    diesel::delete(
+        milestone::table.filter(
+            milestone::id.eq(id)
+        )
+    ).execute(conn)
+    .ok()
+    .map_or(false, |x| x > 0)
+}
+
+pub fn find(
+    conn: &MysqlConnection,
+    id: i32
+) -> Option<Milestone> {
+    milestone::table.filter(
+        milestone::id.eq(id)
+    ).execute(conn)
+    .ok()
+}
