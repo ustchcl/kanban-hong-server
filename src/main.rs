@@ -16,6 +16,8 @@ mod schema;
 mod config;
 mod models;
 mod db;
+mod routes;
+mod errors;
 
 type DbPool = Pool<ConnectionManager<MysqlConnection>>;
 

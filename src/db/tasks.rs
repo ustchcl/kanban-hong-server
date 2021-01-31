@@ -63,7 +63,7 @@ pub struct UpdateTaskData {
 pub fn update(
     conn: &MysqlConnection,
     id: i32,
-    data: &UpdateProjectData
+    data: &UpdateTaskData
 ) -> bool {
     diesel::update(
         task::table.filter(task::id.eq(id))
@@ -78,7 +78,7 @@ pub fn find(
     id: i32
 ) -> Option<Task> {
     task::table.filter(task::id.eq(id))
-        .get_result::<Task>()
+        .get_result::<Task>(conn)
         .ok()
 }
 

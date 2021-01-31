@@ -1,7 +1,7 @@
 use crate::config::DATE_FORMAT;
 use crate::models::account::Account;
 use serde::Serialize;
-use chrono::{DateTime, Utc};
+use chrono::NaiveDateTime;
 use crate::schema::project;
 
 #[derive(Queryable, Identifiable, Associations)]
@@ -13,7 +13,8 @@ pub struct Project {
     pub description: String,
     pub categories: String,
     pub creator_id: i32,
-    pub create_time: DateTime<Utc>,
+    pub create_time: NaiveDateTime,
+    pub update_time: NaiveDateTime,
 }
 
 impl Project {
@@ -36,6 +37,6 @@ pub struct ProjectJson {
     pub title: String,
     pub description: String,
     pub categories: String,
-    pub create_time: DateTime<Utc>,
+    pub create_time: NaiveDateTime,
     pub creator: Account,
 }

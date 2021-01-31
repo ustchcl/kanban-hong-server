@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc};
+use chrono::NaiveDateTime;
 use serde::Serialize;
 use crate::schema::milestone;
 use crate::models::project::{ProjectJson, Project};
@@ -10,7 +10,7 @@ pub struct Milestone {
     pub id: i32,
     pub title: String,
     pub description: String,
-    pub deadline: DateTime<Utc>,
+    pub deadline: NaiveDateTime,
     pub project_id: i32,
 }
 
@@ -31,6 +31,6 @@ pub struct MilestoneJson {
     pub id: i32,
     pub title: String,
     pub description: String,
-    pub deadline: DateTime<Utc>,
+    pub deadline: NaiveDateTime,
     pub project: ProjectJson,
 }
